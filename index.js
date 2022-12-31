@@ -8,6 +8,7 @@ const { Toolkit } = require("actions-toolkit");
 const GH_USERNAME = core.getInput("GH_USERNAME");
 const COMMIT_MSG = core.getInput("COMMIT_MSG");
 const MAX_LINES = core.getInput("MAX_LINES");
+const README_PATH = core.getInput("README_PATH");
 /**
  * Returns the sentence case representation
  * @param {String} str - the string
@@ -75,7 +76,7 @@ const commitFile = async () => {
     "41898282+github-actions[bot]@users.noreply.github.com",
   ]);
   await exec("git", ["config", "--global", "user.name", "readme-bot"]);
-  await exec("git", ["add", "README.md"]);
+  await exec("git", ["add", README_PATH]);
   await exec("git", ["commit", "-m", COMMIT_MSG]);
   await exec("git", ["push"]);
 };
@@ -120,7 +121,7 @@ Toolkit.run(
       // Call the serializer to construct a string
       .map((item) => serializers[item.type](item));
 
-    const readmeContent = fs.readFileSync("./README.md", "utf-8").split("\n");
+    const readmeContent = fs.readFileSync(README_PATH, "utf-8").split("\n");
 
     // Find the index corresponding to <!--START_SECTION:activity--> comment
     let startIdx = readmeContent.findIndex(
@@ -162,7 +163,7 @@ Toolkit.run(
       );
 
       // Update README
-      fs.writeFileSync("./README.md", readmeContent.join("\n"));
+      fs.writeFileSync(README_PATH, readmeContent.join("\n"));
 
       // Commit to the remote repository
       try {
@@ -213,7 +214,7 @@ Toolkit.run(
     }
 
     // Update README
-    fs.writeFileSync("./README.md", readmeContent.join("\n"));
+    fs.writeFileSync(README_PATH, readmeContent.join("\n"));
 
     // Commit to the remote repository
     try {

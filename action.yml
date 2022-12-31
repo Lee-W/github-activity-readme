@@ -15,6 +15,10 @@ inputs:
     description: "The maximum number of lines populated in your readme file"
     default: 5
     required: false
+  README_PATH:
+    description: "The path of README to update"
+    default: "README.md"
+    required: false
 
 branding:
   color: yellow
